@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Install wheel
+        run: pip install wheel
+      - name: Build wheel
+        run: pip wheel ansible==5.1.0
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: 5.1.0
+          files: |
+            ansible-*-py3-none-any.whl
+            ansible_core-*-py3-none-any.whl
